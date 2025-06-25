@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GroundScroller:MonoBehaviour
 {
-    public float scrollSpeed = 2f;
+    public float scrollSpeed = 3f;
 
     void Update()
     {
