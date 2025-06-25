@@ -10,7 +10,9 @@ public class PlayerController:MonoBehaviour
 
     public Transform ladder;
     public float ladderGrowSpeed = 2f;
+    public float dropRotateSpeed = 90f;
     private bool isGrowing = false;
+    private bool isDropping = false;
 
     private void Awake()
     {
@@ -18,7 +20,11 @@ public class PlayerController:MonoBehaviour
 
         // Subscribe to input events to start/stop ladder growing
         controls.Player.Interact.started += ctx => isGrowing = true;
-        controls.Player.Interact.canceled += ctx => isGrowing = false;
+        controls.Player.Interact.canceled += ctx =>
+        {
+            isGrowing = false;
+            isDropping = true; 
+        };
     }
 
     void Start()
@@ -45,7 +51,11 @@ public class PlayerController:MonoBehaviour
             // Move ladder down by half of growAmount to keep bottom fixed
             ladder.localPosition += new Vector3(0, growAmount / 2f, 0);
         }
-
+        else if(isDropping && ladder != null)
+        {
+            float step = dropRotateSpeed * Time.deltaTime;
+            ladder.Rotate(0, 0, -step);
+        }
     }
 
     private void OnEnable()
